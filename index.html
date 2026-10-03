@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wartungsprotokoll</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#1F4E5F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Wartung">
+<style>
+:root{--brand:#1F4E5F;--accent:#2d6d84;--bg:#f4f6f7;--border:#d9e0e2;--muted:#6b7780;--serif:Georgia,'Times New Roman',serif;box-sizing:border-box}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#1c2528;line-height:1.4;padding-bottom:40px;padding-top:env(safe-area-inset-top,0px)}
+header.top{background:#fff;border-bottom:4px solid var(--brand);padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+#logoWrap img{display:block;max-width:60vw;object-fit:contain}
+#logoPh{width:90px;height:50px;border:1.5px dashed var(--muted);border-radius:6px;font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer}
+header h1{margin:0;font-size:20px;color:var(--brand)}
+.sub{font-size:13px;color:var(--muted)}
+.wrap{max-width:860px;margin:0 auto;padding:14px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:14px}
+.card h2{font-size:15px;color:var(--brand);margin:0 0 10px;border-bottom:2px solid var(--border);padding-bottom:6px}
+.card h3{font-size:13px;color:var(--accent);margin:14px 0 4px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+.twoCol{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
+@media(max-width:560px){.twoCol{grid-template-columns:1fr}}
+.stack{display:flex;flex-direction:column;gap:9px}
+.stack label.f{margin-bottom:3px}
+label.f{display:block;font-size:12.5px;color:var(--muted);margin-bottom:3px}
+input[type=text],input[type=email],input[type=tel],input[type=date],select,textarea{width:100%;padding:8px 9px;border:1px solid var(--border);border-radius:6px;font-size:16px;font-family:inherit;background:#fff}
+textarea{min-height:70px}
+.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #eef1f2;flex-wrap:wrap}
+.item:last-child{border:none}.item.col{display:block}
+.lbl{flex:1 1 200px;font-size:14px}
+.cbgroup{display:flex;gap:14px;font-size:13px;color:var(--muted)}
+.cbgroup label{display:flex;align-items:center;gap:5px;white-space:nowrap}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--brand);flex-shrink:0}
+.fielditem{flex:0 0 auto}.w-s{width:90px}.w-m{width:190px}.w-l{flex:1 1 100%;width:100%}
+.typTiles{display:flex;flex-wrap:wrap;gap:8px}
+.typTile{display:flex;align-items:center;gap:7px;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;background:#fbfcfc}
+.typTile.checked{border-color:var(--brand);background:#eaf1f3;color:var(--brand)}
+.statusRow label{display:flex;align-items:center;gap:8px;font-size:14px;margin:8px 0}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+button{border:none;border-radius:7px;padding:11px 15px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;background:#e7edee;color:var(--brand)}
+button.p{background:var(--brand);color:#fff}
+.hint{font-size:12px;color:var(--muted);margin-top:6px}
+.erow{display:grid;grid-template-columns:1fr;gap:6px;padding:9px;margin:6px 0;background:#f6f9fa;border:1px solid var(--border);border-radius:8px}
+.erow .ctl{display:flex;gap:6px;flex-wrap:wrap}.erow .ctl select{width:auto;flex:1 1 130px}
+.erow button{padding:8px 12px}.erow .del{color:#b3261e}
+.insbar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:8px;border:1px dashed #2d6d84;border-radius:8px;background:#eef6f9}.insbar span{font-size:12px;color:#2d6d84;font-weight:600;width:100%}.insbar button{font-size:12.5px;padding:8px 10px}.erow.insOn{border-color:#2d6d84}
+.addbar{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.addbar button{font-size:12.5px;padding:8px 10px}
+.tname{font-size:16px;font-weight:700}
+#editPanel{border:2px solid var(--accent)}
+.editOn #btnEdit{background:var(--accent);color:#fff}
+.companyBlock{font-size:14px;line-height:1.6}
+.companyBlock b{color:var(--brand)}
+.objRow{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:8px}
+#sigWrap{border:1.5px solid var(--border);border-radius:8px;background:#fff;touch-action:none}
+#sigCanvas{display:block;width:100%;height:140px;touch-action:none}
+.sigBtns{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+.sigBtns button{font-size:12.5px;padding:7px 10px}
+.photoGrid{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.photoRow{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:8px;padding:8px}
+.photoRow img{width:78px;height:78px;object-fit:cover;border-radius:6px;flex-shrink:0}
+.photoRow .pf{flex:1}
+.photoRow .del{align-self:flex-start;color:#b3261e;background:none;padding:4px 6px}
+.pbar{font-size:12px;color:#444;white-space:pre-line;padding:6px 16px;background:#eef3f4;border-bottom:1px solid var(--border);text-align:center}
+.pbar.foot{border-top:1px solid var(--border);border-bottom:none;margin-top:16px}
+#printDoc{display:none}
+@page{size:A4;margin:9mm 11mm}
+@media print{
+html,body{background:#fff!important;margin:0!important;padding:0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body>*{display:none!important}
+body>#printDoc{display:block!important;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:8.6pt;color:#1c2528;line-height:1.25}
+.ptab{width:100%;border-collapse:collapse;table-layout:fixed}
+.ptab td{padding:0;vertical-align:top}
+.ptab thead{display:table-header-group}.ptab tfoot{display:table-footer-group}
+.ptab tbody tr{break-inside:avoid;page-break-inside:avoid}
+.phd{display:flex;justify-content:flex-end;align-items:center;min-height:16mm;padding-bottom:2.5mm;margin-bottom:4mm;border-bottom:.8pt solid #1F4E5F}
+.plogo{object-fit:contain;max-width:105mm}.pname{font-weight:700;font-size:13pt;color:#1F4E5F}
+.pft{margin-top:4mm;padding-top:1.8mm;border-top:.6pt solid #1F4E5F;font-size:6.8pt;line-height:1.4;color:#5d6b72}
+.pft .f1{color:#2d6d84}
+.ptitle{font-size:23pt;font-weight:700;color:#2b3438;line-height:1.05;padding-top:5mm}
+.psubt{font-size:12.5pt;font-weight:700;color:#2d6d84;margin-top:1mm}
+.phead{margin-top:3mm;font-size:8pt;color:#5d6b72;white-space:pre-line}
+.pinfo{display:grid;grid-template-columns:1fr 1fr;column-gap:9mm;margin:7mm 0 1mm;padding-bottom:3mm;border-bottom:.5pt solid #b7c4c9}
+.ph{font-weight:700;font-size:9pt;color:#1F4E5F;margin:0 0 1mm}.ph2{margin-top:2.5mm}
+.pnote{font-weight:400;font-size:8.6pt;color:#4b5a61;margin-left:1.5mm}
+.pf{display:grid;grid-template-columns:29mm minmax(0,1fr);column-gap:2mm;align-items:end;padding:1.1mm 0}
+.pl{font-size:7.8pt;color:#4b5a61}
+.pv{display:block;min-height:4.2mm;border-bottom:.6pt solid #7d8f97;padding:0 1mm;font-size:8.6pt;overflow-wrap:anywhere}
+.psec{margin:5mm 0 1.2mm;padding:1.3mm 2mm;font-weight:700;font-size:10pt;color:#1F4E5F;background:#eef3f5;border-left:1.2mm solid #1F4E5F}
+.psub{margin:3mm 0 .5mm;padding-bottom:.6mm;font-weight:700;font-size:8.6pt;color:#2d6d84;border-bottom:.4pt solid #c9d5d9}
+.pr{display:grid;grid-template-columns:minmax(0,1fr) 62mm;column-gap:4mm;align-items:center;padding:.9mm 0;border-bottom:.3pt solid #e1e8ea}
+.pr.wl{grid-template-columns:auto minmax(0,1fr)}.pr.pa{grid-template-columns:1fr}
+.pc{display:flex;align-items:center;gap:4.2mm}
+.bl{display:inline-flex;align-items:center;gap:1.3mm;font-size:7.6pt;color:#3b484e;white-space:nowrap}
+.bx{display:inline-block;width:3.3mm;height:3.3mm;flex:none;border:.7pt solid #4a5b63;border-radius:.4mm}.bx svg{display:block}
+.pline{display:block;width:100%;min-height:4.2mm;border-bottom:.6pt solid #7d8f97;padding:0 1mm;font-size:8.6pt;overflow-wrap:anywhere}.pline.s{width:24mm}
+.pbox{min-height:26mm;margin:1mm 0 2mm;padding:1.5mm 2mm;border:.6pt solid #b7c4c9;font-size:8.6pt;white-space:pre-wrap;overflow-wrap:anywhere}
+.pph{display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin-top:1.5mm}
+.pph figure{margin:0;break-inside:avoid}.pph img{display:block;max-width:100%;max-height:62mm;object-fit:contain;border:.4pt solid #c9d5d9}
+.pph figcaption{font-size:7.6pt;color:#3b484e;margin-top:.8mm}
+.pfirm{display:grid;grid-template-columns:1fr 1fr;column-gap:9mm}
+.psigs{display:grid;grid-template-columns:1fr 1fr;column-gap:10mm;margin-top:9mm}
+.psgb{display:grid;grid-template-columns:36mm 1fr;align-items:end;height:16mm;border-bottom:.7pt solid #333;font-size:8.6pt}
+.psgb img{max-width:100%;max-height:15mm;object-fit:contain;object-position:left bottom}
+.psgc{display:grid;grid-template-columns:36mm 1fr;margin-top:.8mm;font-size:7pt;color:#4b5a61}
+}
+</style>
+</head>
+<body>
+<header class="top no-print">
+  <div id="logoWrap"></div>
+  <div><h1>Wartungsprotokoll</h1><div class="sub" id="typSub"></div></div>
+</header>
+<div id="pHead" class="pbar" hidden></div>
+<div class="wrap">
+  <div class="btns no-print" style="margin-top:0">
+    <button id="btnEdit">✏️ Vorlage bearbeiten</button>
+    <button class="p" id="btnPdf">📄 PDF / Drucken</button>
+    <button id="btnNeu">🆕 Neues Protokoll</button>
+  </div>
+
+  <div class="card no-print" id="editPanel" hidden>
+    <h2>Vorlage bearbeiten</h2>
+    <label class="f">Firmenlogo</label>
+    <div class="ctl" style="display:flex;gap:8px;flex-wrap:wrap">
+      <button data-act="logo-pick">Logo wählen</button><button data-act="logo-del">Logo entfernen</button>
+    </div>
+    <label class="f" style="margin-top:10px">Logo-Größe (Höhe): <b id="logoVal"></b> px</label>
+    <input type="range" id="logoRange" min="20" max="260" step="2" style="width:100%">
+    <label class="f" style="margin-top:12px"><input type="checkbox" id="hShow"> Kopfzeile anzeigen</label><textarea id="hText" placeholder="Text der Kopfzeile (mehrere Zeilen möglich)"></textarea>
+    <label class="f" style="margin-top:10px"><input type="checkbox" id="fShow"> Fußzeile anzeigen</label><textarea id="fText" placeholder="Text der Fußzeile, z. B. Firma, Adresse, Geschäftsführer"></textarea>
+    <div class="addbar"><button data-act="addtype">➕ Anlagentyp hinzufügen</button><button data-act="export">⬇️ Vorlage sichern (vorlage.json)</button><button data-act="import-pick">⬆️ Vorlage laden</button></div>
+    <div class="hint">„Vorlage sichern" erzeugt die Datei vorlage.json. Lädst du sie bei GitHub hoch (ersetzt die alte), erhalten alle Techniker die Änderung automatisch. Alternativ per „Vorlage laden" von Hand einspielen.</div>
+    <input type="file" id="logoFile" accept="image/*" hidden><input type="file" id="importFile" accept=".json,application/json" hidden>
+  </div>
+
+  <div class="card no-print"><h2>Anlagentyp (Mehrfachauswahl)</h2><div id="tiles" class="typTiles"></div><div class="hint">Nur angehakte Typen werden angezeigt und gedruckt.</div></div>
+
+  <div class="card"><h2>Ausführende Fachfirma</h2>
+    <div class="companyBlock">
+      <b>Günther Mersmeyer GmbH</b><br>
+      Kapellenweg 5, 49740 Haselünne<br>
+      Tel. 05961-200390 · info@mersmeyer.com
+    </div>
+    <div class="row" style="margin-top:10px"><div><label class="f">Servicetechniker</label><input type="text" data-k="c_tech"></div></div>
+  </div>
+
+  <div class="card"><h2>Auftraggeber / Anlagenstandort</h2>
+    <div class="twoCol">
+      <div>
+        <h3>Auftraggeber</h3>
+        <div class="stack">
+          <div><label class="f">Firma / Name</label><input type="text" data-k="j_firma"></div>
+          <div><label class="f">Ansprechpartner</label><input type="text" data-k="j_ans"></div>
+          <div><label class="f">Straße/Hausnummer</label><input type="text" data-k="j_str"></div>
+          <div><label class="f">PLZ/Ort</label><input type="text" data-k="j_ort"></div>
+          <div><label class="f">Telefon</label><input type="tel" data-k="j_tel"></div>
+        </div>
+      </div>
+      <div>
+        <h3>Anlagenstandort</h3>
+        <div class="objRow"><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="objSame"> Anlagenstandort weicht vom Auftraggeber ab</label></div>
+        <div class="stack" id="objFields" hidden>
+          <div><label class="f">Straße/Hausnummer</label><input type="text" data-k="j_objStr"></div>
+          <div><label class="f">PLZ/Ort</label><input type="text" data-k="j_objOrt"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sections"></div>
+
+  <div class="card"><h2>Abschluss</h2><div class="statusRow">
+    <label><input type="checkbox" data-k="j_ok"> Wartung konnte erfolgreich durchgeführt werden</label>
+    <label><input type="checkbox" data-k="j_mangel"> Wartung durchgeführt, Mängel siehe Bemerkung</label></div>
+    <label class="f">Bemerkung</label><textarea data-k="j_bem"></textarea>
+
+    <h3>Fotos (z. B. Mängel)</h3>
+    <div id="photoGrid" class="photoGrid"></div>
+    <div class="addbar no-print"><button data-act="photo-pick">📷 Foto hinzufügen</button></div>
+    <input type="file" id="photoFile" accept="image/*" hidden>
+
+    <div class="row" style="margin-top:12px">
+      <div><label class="f">Ort</label><input type="text" data-k="j_abOrt"></div>
+      <div><label class="f">Datum</label><input type="date" data-k="j_datum"></div>
+    </div>
+
+    <h3>Unterschrift Servicetechniker</h3>
+    <div id="sigWrap"><canvas id="sigCanvas"></canvas></div>
+    <div class="sigBtns no-print"><button data-act="sig-clear">Löschen</button><button data-act="sig-file">Unterschriftsdatei hochladen</button></div>
+    <input type="file" id="sigFile" accept="image/*" hidden>
+  </div>
+</div>
+<div id="pFoot" class="pbar foot" hidden></div>
+<div id="printDoc" aria-hidden="true"></div>
+<script>
+(function(){
+"use strict";
+var LS='wp3_state',LSL='wp3_logo';
+function uid(){return 'i'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+var KINDS={chk:'Checkbox: i.O. / n.i.O. / behoben',yn:'Ja / Nein',txt:'Textfeld',area:'Mehrzeiliges Feld',head:'Überschrift'};
+function T(n,a){return {id:uid(),name:n,items:a.map(function(x){return {id:uid(),k:x[0],l:x[1],w:'m'};})};}
+function c(t){return ['chk',t];}function f(t){return ['txt',t];}
+function defaults(){return [
+T('Wärmepumpe',[c('Verdampfer/Kondensatwanne geprüft und gereinigt'),c('Kondensatablauf geprüft'),c('Schmutzfilter Wärmequelle gereinigt'),f('Frostschutzgehalt (°C)'),c('Vordruck MAG geprüft'),f('Anlagendruck (bar)'),c('Fehlerspeicher/Abschaltungen ausgelesen'),c('Elektrische Klemmen: fester Sitz geprüft'),c('Reglereinstellungen geprüft'),c('Testlauf aller Betriebsarten durchgeführt'),c('Dichtheitskontrolle Kältekreis (EU 517/2014)'),f('Kältemitteltyp / Füllmenge')]),
+T('Gas-Brennwertheizung',[c('Gasanschluss auf Dichtheit geprüft'),c('Brenner gereinigt und geprüft'),c('Wärmetauscher gereinigt'),f('Abgaswerte (CO/CO₂, °C)'),c('Kondensatablauf/Siphon geprüft und gereinigt'),c('Zünd-/Ionisationselektrode geprüft'),f('Gasfließdruck (mbar)'),c('Vordruck MAG / Sicherheitsventil geprüft'),f('Anlagendruck (bar)'),c('Reglereinstellungen geprüft'),c('Testlauf durchgeführt')]),
+T('Öl-/Öl-Brennwertheizung',[c('Ölfilter gewechselt'),c('Düse geprüft/gewechselt'),c('Brennerkopf gereinigt und eingestellt'),c('Zündelektroden geprüft/eingestellt'),f('Abgaswerte (Rußzahl/CO₂/°C)'),c('Brenn-/Kesselraum gereinigt'),c('Kondensatablauf geprüft (Brennwert)'),c('Ölleitungen auf Dichtheit geprüft'),f('Anlagendruck (bar)'),c('Reglereinstellungen geprüft'),c('Testlauf durchgeführt')]),
+T('Hebeanlage',[c('Pumpe(n) und Behälter Sichtprüfung'),c('Rückstauklappe geprüft'),c('Schwimmerschalter/Niveausteuerung geprüft'),c('Laufrad auf Verschleiß/Verstopfung geprüft'),c('Alarmanlage/Signalgeber geprüft (DIN EN 12056-4)'),c('Absperrschieber geprüft'),c('Elektrische Anschlüsse/Motorschutz geprüft'),c('Probelauf durchgeführt'),c('Dichtheit der Anlage geprüft')]),
+T('Lüftungsanlage',[c('Filter geprüft/gewechselt'),c('Ventilatoren gereinigt und geprüft'),c('Wärmerückgewinnung gereinigt und geprüft'),c('Luftkanäle Sichtprüfung'),f('Volumenstrom (m³/h)'),c('Kondensatablauf geprüft'),c('Klappen/Stellantriebe geprüft'),c('Reglereinstellungen geprüft'),c('Fehlerspeicher ausgelesen')]),
+T('Sanitäranlage',[c('Armaturen auf Dichtheit geprüft'),c('Rückflussverhinderer geprüft'),f('Warmwassertemperatur (°C)'),c('Opferanode geprüft'),c('Sicherheitsventil Trinkwasser geprüft'),c('Zirkulationspumpe geprüft'),c('Siphons/Abläufe auf Durchgängigkeit geprüft'),f('Wasserdruck (bar)'),c('Schmutzfänger/Filter gereinigt')])];}
+
+function todayISO(){var d=new Date(),m=('0'+(d.getMonth()+1)).slice(-2),day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+
+var DEFAULT_FOOT='Günther Mersmeyer GmbH · Kapellenweg 5, 49740 Haselünne · Tel. 05961-200390 · info@mersmeyer.com';
+var S={types:defaults(),logoH:60,sel:[],data:{},edit:false,head:{show:false,text:''},foot:{show:true,text:DEFAULT_FOOT}},logo=null;
+try{var raw=localStorage.getItem(LS);if(raw){var o=JSON.parse(raw);if(o.types&&o.types.length)S.types=o.types;S.logoH=o.logoH||60;S.sel=o.sel||[];S.data=o.data||{};if(o.head)S.head=o.head;if(o.foot)S.foot=o.foot;}logo=localStorage.getItem(LSL);}catch(e){}
+S.sel=S.sel.filter(function(id){return S.types.some(function(t){return t.id===id;});});
+if(!S.sel.length&&S.types.length)S.sel=[S.types[0].id];
+if(S.data.j_objSame===undefined)S.data.j_objSame=true;
+if(!S.data.j_datum)S.data.j_datum=todayISO();
+if(!S.data.j_photos)S.data.j_photos=[];
+function save(){try{localStorage.setItem(LS,JSON.stringify({types:S.types,logoH:S.logoH,sel:S.sel,data:S.data,head:S.head,foot:S.foot}));}catch(e){}schedulePrint();}
+function $(id){return document.getElementById(id);}
+function findType(id){return S.types.filter(function(t){return t.id===id;})[0];}
+function findItem(id){for(var i=0;i<S.types.length;i++){var it=S.types[i].items;for(var j=0;j<it.length;j++)if(it[j].id===id)return {t:S.types[i],i:j,it:it[j]};}}
+
+function cb(k,l){return '<label><input type="checkbox" data-k="'+k+'"> '+l+'</label>';}
+function rowView(it){
+  var k=it.id,L='<div class="lbl">'+esc(it.l)+'</div>';
+  if(it.k==='head')return '<h3>'+esc(it.l)+'</h3>';
+  if(it.k==='chk')return '<div class="item">'+L+'<div class="cbgroup">'+cb(k+'_io','i.O.')+cb(k+'_nio','n.i.O.')+cb(k+'_beh','behoben')+'</div></div>';
+  if(it.k==='yn')return '<div class="item">'+L+'<div class="cbgroup">'+cb(k+'_ja','Ja')+cb(k+'_nein','Nein')+'</div></div>';
+  if(it.k==='area')return '<div class="item col">'+L+'<textarea data-k="'+k+'"></textarea></div>';
+  return '<div class="item">'+L+'<div class="fielditem w-'+(it.w||'m')+'"><input type="text" data-k="'+k+'"></div></div>';}
+function opts(map,cur){return Object.keys(map).map(function(k){return '<option value="'+k+'"'+(k===cur?' selected':'')+'>'+map[k]+'</option>';}).join('');}
+function insBar(id){var h='<div class="insbar"><span>Neu darunter einfügen:</span>';
+  [['chk','Checkbox'],['yn','Ja/Nein'],['txt','Textfeld'],['area','Mehrzeilig'],['head','Überschrift']].forEach(function(x){h+='<button data-act="insert" data-i="'+id+'" data-kind="'+x[0]+'">'+x[1]+'</button>';});
+  return h+'</div>';}
+function rowEdit(it){
+  return '<div class="erow'+(S.insAfter===it.id?' insOn':'')+'"><input type="text" data-e="l" data-i="'+it.id+'" value="'+esc(it.l)+'"><div class="ctl">'+
+  '<select data-e="k" data-i="'+it.id+'">'+opts(KINDS,it.k)+'</select>'+
+  (it.k==='txt'?'<select data-e="w" data-i="'+it.id+'">'+opts({s:'Feld klein',m:'Feld mittel',l:'Feld volle Breite'},it.w||'m')+'</select>':'')+
+  '<button data-act="insopen" data-i="'+it.id+'">'+(S.insAfter===it.id?'✖ Schließen':'➕ Darunter einfügen')+'</button><button data-act="up" data-i="'+it.id+'">↑</button><button data-act="down" data-i="'+it.id+'">↓</button><button class="del" data-act="del" data-i="'+it.id+'">✕</button></div>'+(S.insAfter===it.id?insBar(it.id):'')+'</div>';}
+
+function render(){
+  document.body.classList.toggle('editOn',S.edit);
+  $('editPanel').hidden=!S.edit;
+  $('tiles').innerHTML=S.types.map(function(t){var on=S.sel.indexOf(t.id)>-1;return '<label class="typTile'+(on?' checked':'')+'"><input type="checkbox" data-sel="'+t.id+'"'+(on?' checked':'')+'> '+esc(t.name)+'</label>';}).join('');
+  var sel=S.types.filter(function(t){return S.sel.indexOf(t.id)>-1;});
+  var subTxt=sel.length?sel.map(function(t){return t.name;}).join(', '):'Bitte Anlagentyp wählen';
+  $('typSub').textContent=subTxt;
+  $('sections').innerHTML=sel.map(function(t){
+    var h='<div class="card">';
+    h+=S.edit?'<div class="ctl" style="display:flex;gap:8px;margin-bottom:8px"><input type="text" class="tname" data-e="tname" data-t="'+t.id+'" value="'+esc(t.name)+'"><button class="del" data-act="deltype" data-t="'+t.id+'" style="color:#b3261e">Typ löschen</button></div>':'<h2>Prüfpunkte – '+esc(t.name)+'</h2>';
+    h+=t.items.map(S.edit?rowEdit:rowView).join('');
+    if(S.edit){h+='<div class="addbar">';['chk','yn','txt','area','head'].forEach(function(k){h+='<button data-act="add" data-t="'+t.id+'" data-kind="'+k+'">➕ '+({chk:'Checkbox',yn:'Ja/Nein',txt:'Textfeld',area:'Mehrzeilig',head:'Überschrift'})[k]+'</button>';});h+='</div>';}
+    return h+'</div>';}).join('');
+  var els=document.querySelectorAll('[data-k]');
+  for(var i=0;i<els.length;i++){var v=S.data[els[i].dataset.k];if(els[i].type==='checkbox')els[i].checked=!!v;else els[i].value=v||'';}
+  $('objSame').checked=!S.data.j_objSame;$('objFields').hidden=!!S.data.j_objSame;
+  $('hShow').checked=S.head.show;$('hText').value=S.head.text;$('fShow').checked=S.foot.show;$('fText').value=S.foot.text;
+  applyBars();applyLogo();renderPhotos();save();}
+
+function applyBars(){var h=$('pHead'),f=$('pFoot');h.textContent=S.head.text;h.hidden=!(S.head.show&&S.head.text.trim());f.textContent=S.foot.text;f.hidden=!(S.foot.show&&S.foot.text.trim());}
+function applyLogo(){
+  var w=$('logoWrap');
+  if(logo){w.innerHTML='<img src="'+logo+'" style="height:'+S.logoH+'px" alt="Logo">';}
+  else{w.innerHTML='<div id="logoPh" class="no-print" data-act="logo-pick">Logo</div>';}schedulePrint();}
+function resizeImage(file,maxW,quality,cb2,png){
+  var r=new FileReader();r.onload=function(){var img=new Image();img.onload=function(){
+    var sc=Math.min(1,maxW/img.width),cv=document.createElement('canvas');cv.width=Math.round(img.width*sc);cv.height=Math.round(img.height*sc);
+    var g=cv.getContext('2d');if(!png){g.fillStyle='#fff';g.fillRect(0,0,cv.width,cv.height);}g.drawImage(img,0,0,cv.width,cv.height);cb2(png?cv.toDataURL('image/png'):cv.toDataURL('image/jpeg',quality));};img.src=r.result;};r.readAsDataURL(file);}
+function loadLogo(file){resizeImage(file,800,.9,function(du){logo=du;try{localStorage.setItem(LSL,logo);}catch(e){alert('Logo konnte nicht gespeichert werden (zu groß).');}applyLogo();},true);}
+
+function renderPhotos(){
+  $('photoGrid').innerHTML=(S.data.j_photos||[]).map(function(p){
+    return '<div class="photoRow"><img src="'+p.img+'"><div class="pf"><label class="f">Beschreibung</label><input type="text" data-phototext="'+p.id+'" value="'+esc(p.text||'')+'"></div><button class="del no-print" data-act="photo-del" data-id="'+p.id+'">✕</button></div>';
+  }).join('')||'<div class="hint">Noch keine Fotos hinzugefügt.</div>';}
+
+var sigCanvas,sigCtx,sigDrawing=false,sigDirty=false;
+function sigResize(){
+  var c2=$('sigCanvas'),ratio=window.devicePixelRatio||1,w=c2.clientWidth,h=c2.clientHeight;
+  c2.width=w*ratio;c2.height=h*ratio;sigCtx.setTransform(ratio,0,0,ratio,0,0);
+  sigCtx.lineWidth=2;sigCtx.lineCap='round';sigCtx.strokeStyle='#111';
+  if(S.data.j_sig)drawSigFromData(S.data.j_sig);}
+function drawSigFromData(du){var im=new Image();im.onload=function(){var c2=$('sigCanvas');sigCtx.clearRect(0,0,c2.width,c2.height);sigCtx.drawImage(im,0,0,c2.clientWidth,c2.clientHeight);};im.src=du;}
+function sigPos(e){var c2=$('sigCanvas'),r=c2.getBoundingClientRect(),t=(e.touches&&e.touches[0])||e;return {x:t.clientX-r.left,y:t.clientY-r.top};}
+function sigStart(e){e.preventDefault();sigDrawing=true;var p=sigPos(e);sigCtx.beginPath();sigCtx.moveTo(p.x,p.y);}
+function sigMove(e){if(!sigDrawing)return;e.preventDefault();var p=sigPos(e);sigCtx.lineTo(p.x,p.y);sigCtx.stroke();sigDirty=true;}
+function sigEnd(){if(!sigDrawing)return;sigDrawing=false;var c2=$('sigCanvas');S.data.j_sig=c2.toDataURL('image/png');save();}
+function initSig(){
+  sigCanvas=$('sigCanvas');sigCtx=sigCanvas.getContext('2d');
+  sigCanvas.addEventListener('pointerdown',sigStart);sigCanvas.addEventListener('pointermove',sigMove);
+  window.addEventListener('pointerup',sigEnd);
+  window.addEventListener('resize',sigResize);
+  setTimeout(sigResize,50);}
+
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,d=b.dataset;
+  if(a==='logo-pick')$('logoFile').click();
+  else if(a==='logo-del'){logo=null;try{localStorage.removeItem(LSL);}catch(x){}applyLogo();}
+  else if(a==='addtype'){var t=T('Neuer Anlagentyp',[]);S.types.push(t);S.sel.push(t.id);render();}
+  else if(a==='deltype'){if(confirm('Diesen Anlagentyp mit allen Zeilen löschen?')){S.types=S.types.filter(function(t){return t.id!==d.t;});S.sel=S.sel.filter(function(i){return i!==d.t;});render();}}
+  else if(a==='insopen'){S.insAfter=(S.insAfter===d.i?null:d.i);render();}
+  else if(a==='insert'){var q=findItem(d.i),ni={id:uid(),k:d.kind,l:d.kind==='head'?'Neue Überschrift':'Neuer Prüfpunkt',w:'m'};
+    q.t.items.splice(q.i+1,0,ni);S.insAfter=ni.id;render();
+    var fe=document.querySelector('input[data-e="l"][data-i="'+ni.id+'"]');if(fe){fe.focus();fe.select();try{fe.scrollIntoView({block:'center'});}catch(x){}}}
+  else if(a==='add'){findType(d.t).items.push({id:uid(),k:d.kind,l:d.kind==='head'?'Neue Überschrift':'Neuer Prüfpunkt',w:'m'});render();}
+  else if(a==='del'||a==='up'||a==='down'){var r=findItem(d.i),arr=r.t.items,j=r.i;
+    if(a==='del')arr.splice(j,1);
+    else{var n=a==='up'?j-1:j+1;if(n>=0&&n<arr.length){var tmp=arr[j];arr[j]=arr[n];arr[n]=tmp;}}
+    render();}
+  else if(a==='export'){var bl=new Blob([JSON.stringify({v:3,types:S.types,logoH:S.logoH,head:S.head,foot:S.foot,logo:logo})],{type:'application/json'});
+    var l=document.createElement('a');l.href=URL.createObjectURL(bl);l.download='vorlage.json';document.body.appendChild(l);l.click();l.remove();}
+  else if(a==='import-pick')$('importFile').click();
+  else if(a==='photo-pick')$('photoFile').click();
+  else if(a==='photo-del'){S.data.j_photos=(S.data.j_photos||[]).filter(function(p){return p.id!==d.id;});save();renderPhotos();}
+  else if(a==='sig-clear'){var c2=$('sigCanvas');sigCtx.clearRect(0,0,c2.width,c2.height);sigDirty=false;delete S.data.j_sig;save();}
+  else if(a==='sig-file')$('sigFile').click();});
+
+function onData(e){var t=e.target;
+  if(t.dataset.k){S.data[t.dataset.k]=t.type==='checkbox'?t.checked:t.value;save();}
+  else if(t.dataset.phototext){var p=(S.data.j_photos||[]).filter(function(x){return x.id===t.dataset.phototext;})[0];if(p){p.text=t.value;save();}}
+  else if(t.dataset.e==='l'){findItem(t.dataset.i).it.l=t.value;save();}
+  else if(t.dataset.e==='tname'){findType(t.dataset.t).name=t.value;save();}
+  else if(t.id==='logoRange'){S.logoH=+t.value;$('logoVal').textContent=S.logoH;applyLogo();save();}
+  else if(t.id==='hText'){S.head.text=t.value;applyBars();save();}
+  else if(t.id==='fText'){S.foot.text=t.value;applyBars();save();}}
+document.addEventListener('input',onData);
+document.addEventListener('change',function(e){var t=e.target;
+  if(t.dataset.sel){var i=S.sel.indexOf(t.dataset.sel);if(t.checked&&i<0)S.sel.push(t.dataset.sel);if(!t.checked&&i>-1)S.sel.splice(i,1);render();}
+  else if(t.dataset.e==='k'||t.dataset.e==='w'){findItem(t.dataset.i).it[t.dataset.e]=t.value;render();}
+  else if(t.id==='objSame'){S.data.j_objSame=!t.checked;save();$('objFields').hidden=!t.checked;}
+  else if(t.id==='logoFile'&&t.files[0]){loadLogo(t.files[0]);t.value='';}
+  else if(t.id==='photoFile'&&t.files[0]){resizeImage(t.files[0],900,.72,function(du){(S.data.j_photos=S.data.j_photos||[]).push({id:uid(),img:du,text:''});save();renderPhotos();});t.value='';}
+  else if(t.id==='sigFile'&&t.files[0]){resizeImage(t.files[0],700,.85,function(du){S.data.j_sig=du;drawSigFromData(du);sigDirty=true;save();});t.value='';}
+  else if(t.id==='importFile'&&t.files[0]){var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);
+    if(!Array.isArray(o.types))throw 0;applyTpl(o);render();}catch(x){alert('Datei ist keine gültige Vorlage.');}};r.readAsText(t.files[0]);t.value='';}
+  else if(t.id==='hShow'){S.head.show=t.checked;render();}
+  else if(t.id==='fShow'){S.foot.show=t.checked;render();}
+  else onData(e);});
+
+function applyTpl(o){
+  S.types=o.types;S.logoH=o.logoH||60;S.head=o.head||{show:false,text:''};S.foot=o.foot||{show:false,text:''};
+  S.sel=S.sel.filter(function(id){return !!findType(id);});if(!S.sel.length&&S.types.length)S.sel=[S.types[0].id];
+  if('logo' in o){logo=o.logo||null;try{if(logo)localStorage.setItem(LSL,logo);else localStorage.removeItem(LSL);}catch(x){}}}
+function hash(s){var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return String(h);}
+function loadCentral(){
+  if(!window.fetch)return;
+  fetch('vorlage.json',{cache:'no-store'}).then(function(r){return r.ok?r.text():Promise.reject();}).then(function(txt){
+    var h=hash(txt),old=null;try{old=localStorage.getItem('wp3_sig');}catch(x){}
+    if(old===h)return;
+    var o=JSON.parse(txt);if(!Array.isArray(o.types))return;
+    applyTpl(o);try{localStorage.setItem('wp3_sig',h);}catch(x){}render();}).catch(function(){});}
+
+$('btnEdit').onclick=function(){S.edit=!S.edit;S.insAfter=null;render();};
+$('btnPdf').onclick=function(){S.edit=false;render();buildPrint();setTimeout(function(){window.print();},400);};
+$('btnNeu').onclick=function(){if(confirm('Neues Protokoll starten? Auftraggeber-, Prüf-, Foto- und Unterschriftsdaten werden geleert (Logo und Vorlage bleiben erhalten).')){
+  var keep={c_tech:S.data.c_tech};S.data=keep;S.data.j_objSame=true;S.data.j_datum=todayISO();
+  if(sigCtx){var c2=$('sigCanvas');sigCtx.clearRect(0,0,c2.width,c2.height);sigDirty=false;}
+  render();}};
+
+var CO={name:'Günther Mersmeyer GmbH',str:'Kapellenweg 5',ort:'49740 Haselünne',tel:'05961-200390',mail:'info@mersmeyer.com'};
+var CHKSVG='<svg viewBox="0 0 10 10" width="100%" height="100%"><path d="M1.7 5.3 4 7.8 8.4 1.9" fill="none" stroke="#1F4E5F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var ptimer=null;
+function schedulePrint(){clearTimeout(ptimer);ptimer=setTimeout(buildPrint,500);}
+function fmtDate(v){var p=String(v||'').split('-');return p.length===3?p[2]+'.'+p[1]+'.'+p[0]:(v||'');}
+function dv(k){return S.data[k]||'';}
+function pbx(on){return '<span class="bx">'+(on?CHKSVG:'')+'</span>';}
+function pbl(on,t){return '<span class="bl">'+pbx(on)+t+'</span>';}
+function pf(l,v){return '<div class="pf"><span class="pl">'+esc(l)+'</span><span class="pv">'+esc(v||'')+'</span></div>';}
+function psec(t){return '<div class="psec">'+esc(t)+'</div>';}
+function pRow(it){
+  var k=it.id,d=S.data,lab='<span class="pt">'+esc(it.l)+'</span>';
+  if(it.k==='chk')return '<div class="pr">'+lab+'<span class="pc">'+pbl(d[k+'_io'],'i.O.')+pbl(d[k+'_nio'],'n.i.O.')+pbl(d[k+'_beh'],'behoben')+'</span></div>';
+  if(it.k==='yn')return '<div class="pr">'+lab+'<span class="pc">'+pbl(d[k+'_ja'],'Ja')+pbl(d[k+'_nein'],'Nein')+'</span></div>';
+  if(it.k==='area')return '<div class="pr pa">'+lab+'<div class="pbox">'+esc(d[k]||'')+'</div></div>';
+  var w=it.w||'m';
+  return '<div class="pr'+(w==='l'?' wl':'')+'">'+lab+'<span class="pc" style="display:block"><span class="pline '+w+'">'+esc(d[k]||'')+'</span></span></div>';}
+function isFilled(it){var d=S.data,k=it.id;
+  if(it.k==='chk')return !!(d[k+'_io']||d[k+'_nio']||d[k+'_beh']);
+  if(it.k==='yn')return !!(d[k+'_ja']||d[k+'_nein']);
+  return !!String(d[k]||'').trim();}
+function printable(items){
+  var res=[],pend=[],saw=false,any=false;
+  items.forEach(function(it){
+    if(it.k==='head'){if(saw){pend=[];saw=false;}pend.push(it);return;}
+    saw=true;
+    if(isFilled(it)){any=true;res=res.concat(pend);pend=[];res.push(it);}});
+  if(any&&!saw)res=res.concat(pend);
+  return res;}
+function sectionRows(t,n){
+  var out=[],buf=psec(n+'. '+t.name),need=2;
+  printable(t.items).forEach(function(it){
+    if(it.k==='head'){buf+='<div class="psub">'+esc(it.l)+'</div>';return;}
+    buf+=pRow(it);need--;if(need<=0){out.push(buf);buf='';need=1;}});
+  if(buf)out.push(buf);return out;}
+function buildPrint(){
+  var el=$('printDoc');if(!el)return;
+  var sel=S.types.filter(function(t){return S.sel.indexOf(t.id)>-1;}),names=sel.map(function(t){return t.name;}).join(', '),rows=[],n=sel.length,d=S.data;
+  var lh=Math.min(42,Math.max(10,S.logoH*0.375)).toFixed(1);
+  var hd=logo?'<img class="plogo" src="'+logo+'" style="height:'+lh+'mm" alt="">':'<span class="pname">'+esc(CO.name)+'</span>';
+  var ft='';
+  if(S.foot.show&&S.foot.text.trim())ft='<tfoot><tr><td><div class="pft">'+S.foot.text.split(/\r?\n/).map(function(l,i){return '<div'+(i===0?' class="f1"':'')+'>'+esc(l)+'</div>';}).join('')+'</div></td></tr></tfoot>';
+  rows.push('<div class="ptitle">Wartungsprotokoll</div>'+(names?'<div class="psubt">für '+esc(names)+'</div>':'')+((S.head.show&&S.head.text.trim())?'<div class="phead">'+esc(S.head.text)+'</div>':''));
+  var same=!!d.j_objSame;
+  rows.push('<div class="pinfo"><div><div class="ph">Auftraggeber</div>'+pf('Firma / Name',d.j_firma)+pf('Ansprechpartner',d.j_ans)+pf('Straße/Hausnummer',d.j_str)+pf('PLZ/Ort',d.j_ort)+pf('Telefon',d.j_tel)+'</div>'+
+    '<div><div class="ph">Anlagenstandort'+(same?'<span class="pnote">(entspricht Auftraggeber)</span>':'')+'</div>'+(same?'':pf('Straße/Hausnummer',d.j_objStr)+pf('PLZ/Ort',d.j_objOrt))+'</div></div>');
+  sel.forEach(function(t,i){sectionRows(t,i+1).forEach(function(r){rows.push(r);});});
+  var hasBem=String(d.j_bem||'').trim(),num=n;
+  if(hasBem||d.j_ok||d.j_mangel){num++;rows.push(psec(num+'. Bemerkung')+(hasBem?'<div class="pbox">'+esc(d.j_bem)+'</div>':'')+
+    (d.j_ok?'<div class="pr"><span class="pt">Wartung konnte erfolgreich durchgeführt werden.</span><span class="pc">'+pbx(true)+'</span></div>':'')+
+    (d.j_mangel?'<div class="pr"><span class="pt">Wartung wurde durchgeführt. Die Mängel im Feld Bemerkung werden behoben.</span><span class="pc">'+pbx(true)+'</span></div>':''));}
+  var ph=d.j_photos||[];
+  for(var i=0;i<ph.length;i+=2){
+    var pair=ph.slice(i,i+2).map(function(p){return '<figure><img src="'+p.img+'" alt=""><figcaption>'+esc(p.text||'')+'</figcaption></figure>';}).join('');
+    rows.push((i===0?psec((num+1)+'. Fotodokumentation'):'')+'<div class="pph">'+pair+'</div>');}
+  var od=[d.j_abOrt,fmtDate(d.j_datum)].filter(Boolean).join(', ');
+  rows.push('<div class="psec">Ausführende Fachfirma</div><div class="pfirm"><div>'+pf('Firma',CO.name)+pf('Servicetechniker',d.c_tech)+pf('Straße/Hausnummer',CO.str)+'</div><div>'+pf('PLZ/Ort',CO.ort)+pf('Telefon',CO.tel)+pf('E-Mail',CO.mail)+'</div></div>'+
+    '<div class="psigs"><div><div class="psgb"><span>'+esc(od)+'</span><span>'+(d.j_sig?'<img src="'+d.j_sig+'" alt="">':'')+'</span></div><div class="psgc"><span>Ort, Datum</span><span>Unterschrift Servicetechniker</span></div></div></div>');
+  el.innerHTML='<table class="ptab"><thead><tr><td><div class="phd">'+hd+'</div></td></tr></thead>'+ft+'<tbody>'+rows.map(function(r){return '<tr><td>'+r+'</td></tr>';}).join('')+'</tbody></table>';}
+window.addEventListener('beforeprint',buildPrint);
+if(window.matchMedia){var mq=window.matchMedia('print'),mh=function(e){if(e.matches)buildPrint();};if(mq.addEventListener)mq.addEventListener('change',mh);else if(mq.addListener)mq.addListener(mh);}
+
+render();initSig();loadCentral();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
+})();
+</script>
+</body>
+</html>
